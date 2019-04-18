@@ -47,15 +47,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  var firstName = TextEditingController();
+  var lastName = TextEditingController();
+  var contactNum = TextEditingController();
+  var trailerPlateNum =TextEditingController();
+  var boxPlateNum = TextEditingController();
+  bool paidBool = false;
+
+  void createForm(){
+
+    var data = {
+      'firstName': firstName.text,
+      'lastName': lastName.text,
+      'contactNum': int.parse(contactNum.text),
+      'trailerPlateNum': int.parse(trailerPlateNum.text),
+      'boxPlateNum': int.parse(boxPlateNum.text),
+      'paid': paidBool,
+    };
+      
+
+    final DocumentReference postRef = Firestore.instance.collection("forms").document('safeparking');
+    postRef.collection("forms").add(data);
+  
+  }
+
+
  
   final formats = {
     InputType.date: DateFormat('yyyy-MM-dd'),
   };
-  bool paidBool = false;
+
+  
 
   @override
   Widget build(BuildContext context) {
-
     
     return Scaffold(
       appBar: AppBar(
@@ -109,46 +135,51 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: EdgeInsets.all(10.0),
               child: TextField(
-              decoration: InputDecoration(
-                labelText: "First Name"
-              ),
-            ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.all(15.00),
-              child: TextField(
-              decoration: InputDecoration(
-                labelText: "Last Name"
-              ),
-            ),
+                controller: firstName,
+                decoration: InputDecoration(
+                  labelText: "First Name"
+                ),
+             ),
             ),
 
             Padding(
               padding: EdgeInsets.all(15.00),
               child: TextField(
-              decoration: InputDecoration(
-                labelText: "Contact Number"
+                controller: lastName,
+                decoration: InputDecoration(
+                  labelText: "Last Name"
+                ),
               ),
-            ),
             ),
 
             Padding(
               padding: EdgeInsets.all(15.00),
               child: TextField(
-              decoration: InputDecoration(
-                labelText: "Trailer Plate Number"
+                controller: contactNum,
+                decoration: InputDecoration(
+                  labelText: "Contact Number"
+                ),
               ),
-            ),
             ),
 
             Padding(
               padding: EdgeInsets.all(15.00),
               child: TextField(
-              decoration: InputDecoration(
-                labelText: "Box Plate Number"
+                controller: trailerPlateNum,
+                decoration: InputDecoration(
+                  labelText: "Trailer Plate Number"
+                ),
               ),
             ),
+
+            Padding(
+              padding: EdgeInsets.all(15.00),
+              child: TextField(
+                controller: boxPlateNum,
+                decoration: InputDecoration(
+                  labelText: "Box Plate Number"
+                ),
+              ),
             ),
 
             Padding(
@@ -166,6 +197,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ],
               )
+            ),
+
+            RaisedButton(
+              child: Text(
+                "Add",
+                style: TextStyle(color: Colors.white)
+              ),
+              color: Colors.blue,
+              onPressed: (){
+                createForm();
+              },
             )
 
             
