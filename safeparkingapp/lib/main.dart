@@ -50,6 +50,39 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+
+
+  Card paymentCard(String title, int count)
+  {
+
+    return Card(
+      elevation: 8.0,
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: Container(
+        decoration: BoxDecoration(color: Colors.white),
+        child: ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          leading: Container(
+          padding: EdgeInsets.only(right: 12.0),
+            decoration: new BoxDecoration(
+                border: new Border(
+                    right: new BorderSide(width: 1.0, color: Colors.indigo))),
+            child: Text("$count",
+              style: TextStyle(fontSize: 30, color: Colors.indigo),
+            ),
+            
+          ),
+          
+          title: Text("$title"),
+          trailing: Icon(
+            Icons.arrow_forward_ios,
+          ),
+        ),
+      ),
+    );
+
+  }
+
   Widget build(BuildContext context) {
     
     return Scaffold(
@@ -87,36 +120,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 .where('paid', isEqualTo: false)
                 .snapshots(),
               builder: (BuildContext context, AsyncSnapshot snapshot){
-                return Card(
-                  elevation: 8.0,
-                  margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-                  child: Container(
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                      leading: Container(
-                      padding: EdgeInsets.only(right: 12.0),
-                        decoration: new BoxDecoration(
-                            border: new Border(
-                                right: new BorderSide(width: 1.0, color: Colors.indigo))),
-                        child: Text("${snapshot.data.documents.length}",
-                          style: TextStyle(fontSize: 30, color: Colors.indigo),
-                        ),
-                        
-                      ),
-                      
-                      title: Text("Active Payments"),
-                      trailing: Icon(
-                        Icons.arrow_forward_ios,
-                      ),
-                    ),
-                  ),
-                );
+                return paymentCard("Pending Payments", snapshot.data.documents.length);
               },
             ),
 
-            
-            
+            StreamBuilder(
+              stream: Firestore.instance
+                .collection('forms')
+                .document("safeparking")
+                .collection('forms')
+                .where('paid', isEqualTo: true)
+                .snapshots(),
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                return paymentCard("Completed Payments", snapshot.data.documents.length);
+              },
+            ),
 
           ],
         ),
