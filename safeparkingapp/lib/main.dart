@@ -89,6 +89,26 @@ class _MyHomePageState extends State<MyHomePage> {
   
 
   @override
+  void signatureAlert(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text("Missing confirmation"),
+          content: Text("Form cannot be submitted unless driver signs"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }
+    );
+  }
+
   Widget build(BuildContext context) {
     
     return Scaffold(
@@ -252,7 +272,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               color: Colors.blue,
               onPressed: (){
-                createForm();
+                signatureBool?createForm(): signatureAlert();
+                
               },
             )
 
