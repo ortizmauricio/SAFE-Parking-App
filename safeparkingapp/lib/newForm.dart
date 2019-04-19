@@ -48,8 +48,8 @@ class _newFormState extends State<newForm> {
       'firstName': firstName.text,
       'lastName': lastName.text,
       'contactNum': int.parse(contactNum.text),
-      'trailerPlateNum': int.parse(trailerPlateNum.text),
-      'boxPlateNum': int.parse(boxPlateNum.text),
+      'trailerPlateNum': trailerPlateNum.text,
+      'boxPlateNum': boxPlateNum.text,
       'employee': employeeID.text,
       'paid': paidBool,
       'signature': signatureBool,
@@ -288,7 +288,7 @@ class _newFormState extends State<newForm> {
                   ],
                 ),
                 
-                //Submit button
+                //Submit button, only works if signature checkbox is true
                 Padding(
                   padding: EdgeInsets.only(left: 60.0, right: 60.0),
                   child: RaisedButton(
@@ -299,8 +299,13 @@ class _newFormState extends State<newForm> {
                     color: Colors.indigo,
                     splashColor: Colors.blueGrey,
                     onPressed: (){
-                      signatureBool?createForm(): signatureAlert();
-                      
+                      if(signatureBool){
+                        createForm();
+                        Navigator.maybePop(context);
+                      }
+                      else{
+                         signatureAlert();
+                      }
                     },
                   )
                 )
