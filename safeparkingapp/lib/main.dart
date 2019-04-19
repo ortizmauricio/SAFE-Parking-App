@@ -48,22 +48,31 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  var pickupDate = TextEditingController();
+  var dropOffDate =TextEditingController();
   var firstName = TextEditingController();
   var lastName = TextEditingController();
   var contactNum = TextEditingController();
-  var trailerPlateNum =TextEditingController();
+  var trailerPlateNum = TextEditingController();
   var boxPlateNum = TextEditingController();
+  var employeeID = TextEditingController();
+  
+  bool signatureBool = false;
   bool paidBool = false;
 
   void createForm(){
 
     var data = {
+      'pickupDate': pickupDate.text,
+      'dropOffDate': dropOffDate.text,
       'firstName': firstName.text,
       'lastName': lastName.text,
       'contactNum': int.parse(contactNum.text),
       'trailerPlateNum': int.parse(trailerPlateNum.text),
       'boxPlateNum': int.parse(boxPlateNum.text),
+      'employeeID': int.parse(employeeID.text),
       'paid': paidBool,
+      'signature': signatureBool,
     };
       
 
@@ -73,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
- 
   final formats = {
     InputType.date: DateFormat('yyyy-MM-dd'),
   };
@@ -94,8 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
           
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
-
             Row(
               children: <Widget>[
                 Expanded(
@@ -106,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         inputType: InputType.date,
                         format: formats[InputType.date],
                         editable: true,
+                        controller: pickupDate,
                         decoration: InputDecoration(
                             labelText: 'Pickup', hasFloatingPlaceholder: false),
                         onChanged: (dt) => setState(() => print(dt)),
@@ -122,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         inputType: InputType.date,
                         format: formats[InputType.date],
                         editable: true,
+                        controller: dropOffDate,
                         decoration: InputDecoration(
                             labelText: 'Dropoff', hasFloatingPlaceholder: false),
                         onChanged: (dt) => setState(() => print(dt)),
@@ -182,22 +190,60 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
 
-            Padding(
-              padding: EdgeInsets.all(15.00),
-              child: Row(
-                children: <Widget>[
-                  Text("Paid"),
-                  Checkbox(
-                    value: paidBool,
-                    onChanged: (bool value){
-                      setState(() {
-                        paidBool = value;
-                      });
-                    },
-                  )
-                ],
-              )
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.all(15.00),
+                      child: TextField(
+                        controller: employeeID,
+                        decoration: InputDecoration(
+                          labelText: "Employee ID"
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.all(15.00),
+                      child: Row(
+                        children: <Widget>[
+                          Text("Paid"),
+                          Checkbox(
+                            value: paidBool,
+                            onChanged: (bool value){
+                              setState(() {
+                                paidBool = value;
+                              });
+                            },
+                          )
+                        ],
+                      )
+                    ),
+                  ),
+                ),
+              ],
             ),
+
+            Row(
+              children: <Widget>[
+                Checkbox(
+                  value: signatureBool,
+                  onChanged: (bool value){
+                    setState(() {
+                      signatureBool = value;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: Text("By clicking this checkbox you confirm that all details listed above are true"),
+                )
+              ],
+            ),
+            
 
             RaisedButton(
               child: Text(
