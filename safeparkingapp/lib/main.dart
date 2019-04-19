@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'newForm.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'SAFE Parking',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -21,9 +22,10 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'SAFE Parking'),
+      
     );
   }
 }
@@ -48,275 +50,35 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  var pickupDate = TextEditingController();
-  var dropOffDate =TextEditingController();
-  var firstName = TextEditingController();
-  var lastName = TextEditingController();
-  var contactNum = TextEditingController();
-  var trailerPlateNum = TextEditingController();
-  var boxPlateNum = TextEditingController();
-  var employeeID = TextEditingController();
-  
-  bool signatureBool = false;
-  bool paidBool = false;
 
-
-  int radioValue1 = 0;
-  bool showDates = true;
-
-  void handleRadioValueChange(int value){
-
-    setState(() {
-      radioValue1 = value;
-      value == 1 ? showDates = false: showDates = true;
-    });
-
-  }
-
-  void createForm(){
-
-    var data = {
-      'monthly': !showDates,
-      'pickupDate': pickupDate.text,
-      'dropOffDate': dropOffDate.text,
-      'firstName': firstName.text,
-      'lastName': lastName.text,
-      'contactNum': int.parse(contactNum.text),
-      'trailerPlateNum': int.parse(trailerPlateNum.text),
-      'boxPlateNum': int.parse(boxPlateNum.text),
-      'employee': employeeID.text,
-      'paid': paidBool,
-      'signature': signatureBool,
-    };
-      
-
-    final DocumentReference postRef = Firestore.instance.collection("forms").document('safeparking');
-    postRef.collection("forms").add(data);
-  
-  }
-
-
-  final formats = {
-    InputType.date: DateFormat('yyyy-MM-dd'),
-  };
-
-  
-
-  @override
-  void signatureAlert(){
-    showDialog(
-      context: context,
-      builder: (BuildContext context){
-        return AlertDialog(
-          title: Text("Missing confirmation"),
-          content: Text("Form cannot be submitted unless driver signs"),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      }
-    );
-  }
 
   Widget build(BuildContext context) {
     
     return Scaffold(
       appBar: AppBar(
-        
         title: Text(widget.title),
+        actions: <Widget>[
+          Container(
+            padding: EdgeInsets.all(10.0),
+            child: FlatButton(
+              child: Text(
+                "New Form",
+                style: TextStyle(color: Colors.white),
+                ),
+              highlightColor: Colors.blueGrey,
+              color: Colors.indigo[400],
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => newForm()));
+              },
+                
+            )
+           
+          )
+          
+        ],
       ),
       body: Center(
         
-        child: ListView(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Radio(
-                  value: 0,
-                  groupValue: radioValue1,
-                  onChanged: handleRadioValueChange,
-                ),
-                Text("No Monthly Payment"),
-                Radio(
-                  value: 1,
-                  groupValue: radioValue1,
-                  onChanged: handleRadioValueChange,
-                ),
-                Text("Monthly Payment"),
-              ],
-            ),
-
-            showDates ?
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: DateTimePickerFormField(
-                        inputType: InputType.date,
-                        format: formats[InputType.date],
-                        editable: true,
-                        controller: pickupDate,
-                        decoration: InputDecoration(
-                            labelText: 'Pickup', hasFloatingPlaceholder: false),
-                        onChanged: (dt) => setState(() => print(dt)),
-                      ),
-                    )
-                  ),
-                ),
-
-                Expanded(
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: DateTimePickerFormField(
-                        inputType: InputType.date,
-                        format: formats[InputType.date],
-                        editable: true,
-                        controller: dropOffDate,
-                        decoration: InputDecoration(
-                            labelText: 'Dropoff', hasFloatingPlaceholder: false),
-                        onChanged: (dt) => setState(() => print(dt)),
-                      ),
-                    )
-                  ),
-                )
-              ],
-            ): Container(),
-
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: TextField(
-                controller: firstName,
-                autofocus: true,
-                decoration: InputDecoration(
-                  labelText: "First Name"
-                ),
-             ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.all(15.00),
-              child: TextField(
-                controller: lastName,
-                autofocus: true,
-                decoration: InputDecoration(
-                  labelText: "Last Name"
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.all(15.00),
-              child: TextField(
-                controller: contactNum,
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: "Contact Number"
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.all(15.00),
-              child: TextField(
-                controller: trailerPlateNum,
-                autofocus: true,
-                decoration: InputDecoration(
-                  labelText: "Trailer Plate Number"
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.all(15.00),
-              child: TextField(
-                controller: boxPlateNum,
-                autofocus: true,
-                decoration: InputDecoration(
-                  labelText: "Box Plate Number"
-                ),
-              ),
-            ),
-
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(15.00),
-                      child: TextField(
-                        controller: employeeID,
-                        decoration: InputDecoration(
-                          labelText: "Employee Initials"
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(15.00),
-                      child: Row(
-                        children: <Widget>[
-                          Text("Paid"),
-                          Checkbox(
-                            value: paidBool,
-                            onChanged: (bool value){
-                              setState(() {
-                                paidBool = value;
-                              });
-                            },
-                          )
-                        ],
-                      )
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            Row(
-              children: <Widget>[
-                Checkbox(
-                  value: signatureBool,
-                  onChanged: (bool value){
-                    setState(() {
-                      signatureBool = value;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: Text("By clicking this checkbox you confirm that all details listed above are true"),
-                )
-              ],
-            ),
-            
-
-            RaisedButton(
-              child: Text(
-                "Add",
-                style: TextStyle(color: Colors.white)
-              ),
-              color: Colors.blue,
-              onPressed: (){
-                signatureBool?createForm(): signatureAlert();
-                
-              },
-            )
-
-            
-          ],
-        ),
-
         
       ),
     
