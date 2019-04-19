@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       'contactNum': int.parse(contactNum.text),
       'trailerPlateNum': int.parse(trailerPlateNum.text),
       'boxPlateNum': int.parse(boxPlateNum.text),
-      'employeeID': int.parse(employeeID.text),
+      'employee': employeeID.text,
       'paid': paidBool,
       'signature': signatureBool,
     };
@@ -118,9 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         
-        child: Column(
-          
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -164,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.all(10.0),
               child: TextField(
                 controller: firstName,
+                autofocus: true,
                 decoration: InputDecoration(
                   labelText: "First Name"
                 ),
@@ -174,6 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.all(15.00),
               child: TextField(
                 controller: lastName,
+                autofocus: true,
                 decoration: InputDecoration(
                   labelText: "Last Name"
                 ),
@@ -184,6 +184,8 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.all(15.00),
               child: TextField(
                 controller: contactNum,
+                autofocus: true,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: "Contact Number"
                 ),
@@ -194,6 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.all(15.00),
               child: TextField(
                 controller: trailerPlateNum,
+                autofocus: true,
                 decoration: InputDecoration(
                   labelText: "Trailer Plate Number"
                 ),
@@ -204,6 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.all(15.00),
               child: TextField(
                 controller: boxPlateNum,
+                autofocus: true,
                 decoration: InputDecoration(
                   labelText: "Box Plate Number"
                 ),
@@ -219,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: TextField(
                         controller: employeeID,
                         decoration: InputDecoration(
-                          labelText: "Employee ID"
+                          labelText: "Employee Initials"
                         ),
                       ),
                     ),
@@ -280,6 +284,8 @@ class _MyHomePageState extends State<MyHomePage> {
             
           ],
         ),
+
+        
       ),
     
     );
