@@ -60,9 +60,23 @@ class _MyHomePageState extends State<MyHomePage> {
   bool signatureBool = false;
   bool paidBool = false;
 
+
+  int radioValue1 = 0;
+  bool showDates = true;
+
+  void handleRadioValueChange(int value){
+
+    setState(() {
+      radioValue1 = value;
+      value == 1 ? showDates = false: showDates = true;
+    });
+
+  }
+
   void createForm(){
 
     var data = {
+      'monthly': !showDates,
       'pickupDate': pickupDate.text,
       'dropOffDate': dropOffDate.text,
       'firstName': firstName.text,
@@ -122,6 +136,24 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Row(
               children: <Widget>[
+                Radio(
+                  value: 0,
+                  groupValue: radioValue1,
+                  onChanged: handleRadioValueChange,
+                ),
+                Text("No Monthly Payment"),
+                Radio(
+                  value: 1,
+                  groupValue: radioValue1,
+                  onChanged: handleRadioValueChange,
+                ),
+                Text("Monthly Payment"),
+              ],
+            ),
+
+            showDates ?
+            Row(
+              children: <Widget>[
                 Expanded(
                   child: Container(
                     child: Padding(
@@ -156,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 )
               ],
-            ),
+            ): Container(),
 
             Padding(
               padding: EdgeInsets.all(10.0),
