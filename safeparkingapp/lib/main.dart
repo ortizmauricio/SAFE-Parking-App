@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'newForm.dart';
+import 'pendingPayments.dart';
 
 void main() => runApp(MyApp());
 
@@ -120,7 +121,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 .where('paid', isEqualTo: false)
                 .snapshots(),
               builder: (BuildContext context, AsyncSnapshot snapshot){
-                return paymentCard("Pending Payments", snapshot.data.documents.length);
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => pendingPayments()));
+                  },
+                  child: paymentCard("Pending Payments", snapshot.data.documents.length),
+                );
               },
             ),
 
