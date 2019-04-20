@@ -52,26 +52,25 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
 
-
+ 
   Card paymentCard(String title, int count)
   {
 
     return Card(
       elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
       child: Container(
         decoration: BoxDecoration(color: Colors.white),
         child: ListTile(
           contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           leading: Container(
           padding: EdgeInsets.only(right: 12.0),
-            decoration: new BoxDecoration(
-                border: new Border(
-                    right: new BorderSide(width: 1.0, color: Colors.indigo))),
+            decoration: BoxDecoration(
+                border: Border(
+                    right: BorderSide(width: 1.0, color: Colors.indigo))),
             child: Text("$count",
               style: TextStyle(fontSize: 30, color: Colors.indigo),
             ),
-            
           ),
           
           title: Text("$title"),
@@ -123,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (BuildContext context, AsyncSnapshot snapshot){
                 return GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => pendingPayments()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => pendingPayments(snapshot.data)));
                   },
                   child: paymentCard("Pending Payments", snapshot.data.documents.length),
                 );
