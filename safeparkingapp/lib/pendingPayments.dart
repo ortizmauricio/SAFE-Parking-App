@@ -104,7 +104,6 @@ class _pendingPaymentsState extends State<pendingPayments> {
             ]
           ),
         )
-        
     );
   }
 

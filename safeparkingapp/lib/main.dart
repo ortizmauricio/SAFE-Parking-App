@@ -52,7 +52,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
 
- 
+  //Creates layout for card on homepage
   Card paymentCard(String title, int count)
   {
 
@@ -101,17 +101,17 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => newForm()));
               },
-                
             )
-           
           ),
-
         ],
       ),
       body: Center(
         
         child: Column(
           children: <Widget>[
+
+            //Loads data of unpaid forms only and passes data
+            //to layout helper funciton, "paymentCard"
             StreamBuilder(
               stream: Firestore.instance
                 .collection('forms')
@@ -129,6 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
 
+            //Loads data of paid forms only and passes data
+            //to layout helper funciton, "paymentCard"
             StreamBuilder(
               stream: Firestore.instance
                 .collection('forms')
