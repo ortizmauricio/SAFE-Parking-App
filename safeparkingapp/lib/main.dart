@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
           leading: Container(
           padding: EdgeInsets.only(right: 12.0),
             decoration: BoxDecoration(
-                border: Border(
+                border:  Border(
                     right: BorderSide(width: 1.0, color: Colors.indigo))),
             child: Text("$count",
               style: TextStyle(fontSize: 30, color: Colors.indigo),
