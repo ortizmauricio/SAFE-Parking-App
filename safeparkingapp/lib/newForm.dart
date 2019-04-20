@@ -16,6 +16,7 @@ class _newFormState extends State<newForm> {
   var firstName = TextEditingController();
   var lastName = TextEditingController();
   var contactNum = TextEditingController();
+  var licenseNum =TextEditingController();
   var trailerPlateNum = TextEditingController();
   var boxPlateNum = TextEditingController();
   var employeeID = TextEditingController();
@@ -48,6 +49,7 @@ class _newFormState extends State<newForm> {
       'firstName': firstName.text,
       'lastName': lastName.text,
       'contactNum': int.parse(contactNum.text),
+      'licenseNum': int.parse(licenseNum.text),
       'trailerPlateNum': trailerPlateNum.text,
       'boxPlateNum': boxPlateNum.text,
       'employee': employeeID.text,
@@ -208,11 +210,25 @@ class _newFormState extends State<newForm> {
                   ),
                 ),
 
+                //License Number
+                Padding(
+                  padding: EdgeInsets.all(15.00),
+                  child: TextField(
+                    controller: licenseNum,
+                    autofocus: true,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: "Driver License Number"
+                    ),
+                  ),
+                ),
+
                 //Trailer Plate Number
                 Padding(
                   padding: EdgeInsets.all(15.00),
                   child: TextField(
                     controller: trailerPlateNum,
+                    textCapitalization: TextCapitalization.characters,
                     autofocus: true,
                     decoration: InputDecoration(
                       labelText: "Trailer Plate Number"
@@ -226,6 +242,7 @@ class _newFormState extends State<newForm> {
                   child: TextField(
                     controller: boxPlateNum,
                     autofocus: true,
+                    textCapitalization: TextCapitalization.characters,
                     decoration: InputDecoration(
                       labelText: "Box Plate Number"
                     ),
@@ -241,6 +258,7 @@ class _newFormState extends State<newForm> {
                           padding: EdgeInsets.all(15.00),
                           child: TextField(
                             controller: employeeID,
+                            textCapitalization: TextCapitalization.characters,
                             decoration: InputDecoration(
                               labelText: "Employee Initials"
                             ),
