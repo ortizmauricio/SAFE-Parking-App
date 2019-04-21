@@ -84,10 +84,19 @@ class _pendingPaymentsState extends State<pendingPayments> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    IconButton(
-                            icon: Icon(Icons.more_vert),
-                            alignment: Alignment.topRight,
-                          ),
+                   PopupMenuButton<int>(
+                      icon: Icon(Icons.more_vert),
+                      itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 1,
+                              child: Text("Edit"),
+                            ),
+                            PopupMenuItem(
+                              value: 2,
+                              child: Text("Delete"),
+                            ),
+                          ],
+                    ),
                     Container(
                       alignment: Alignment.bottomRight,
                       padding: EdgeInsets.only(right: 15.0),
@@ -123,12 +132,22 @@ class _pendingPaymentsState extends State<pendingPayments> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: ListView.builder(
-              itemCount: widget.pending.documents.length,
-              itemBuilder: (BuildContext context, int index) {
-                return pendingCard(widget.pending.documents[index]);
+            child: StreamBuilder(
+              stream: Firestore.instance
+              .collection("forms")
+              .document("safeparking")
+              .collection("forms")
+              .where('paid', isEqualTo: false)
+              .snapshots(),
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                return ListView.builder(
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return pendingCard(snapshot.data.documents[index]);
+                  },
+                );
               },
-            ),
+            )
           )
         ],
       ),
