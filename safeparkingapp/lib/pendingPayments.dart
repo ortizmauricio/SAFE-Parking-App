@@ -15,6 +15,13 @@ class pendingPayments extends StatefulWidget {
 }
 
 class _pendingPaymentsState extends State<pendingPayments> {
+  
+
+  deleteItem(var data) async{
+    await Firestore.instance.runTransaction((Transaction myTransaction) async {
+        await myTransaction.delete(data.reference);
+    });
+  }
 
   Card pendingCard(var data){
 
@@ -96,6 +103,12 @@ class _pendingPaymentsState extends State<pendingPayments> {
                               child: Text("Delete"),
                             ),
                           ],
+
+                          onSelected: (value){
+                            value == 1 ?
+                              print("Edit item")
+                            : deleteItem(data);
+                          },
                     ),
                     Container(
                       alignment: Alignment.bottomRight,
