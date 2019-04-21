@@ -17,19 +17,44 @@ class pendingPayments extends StatefulWidget {
 class _pendingPaymentsState extends State<pendingPayments> {
   
 
+//Deletes current card via delete option
   deleteItem(var data) async{
     await Firestore.instance.runTransaction((Transaction myTransaction) async {
         await myTransaction.delete(data.reference);
     });
   }
 
-  Card pendingCard(var data){
 
+//Pop up menu on every card
+PopupMenuButton optionsMenu(var data){
+  return PopupMenuButton<int>(
+      icon: Icon(Icons.more_vert),
+      itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 1,
+              child: Text("Edit"),
+            ),
+            PopupMenuItem(
+              value: 2,
+              child: Text("Delete"),
+            ),
+          ],
+
+          onSelected: (value){
+            value == 1 ?
+              print("Edit item")
+            :deleteItem(data);
+          },
+    );
+}
+
+//Creates card containing driver information, options to edit, delete
+//or mark entry as paid.
+  Card pendingCard(var data){
     return Card(
       elevation: 3.0,
       margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: 
-        Padding(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,6 +62,7 @@ class _pendingPaymentsState extends State<pendingPayments> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  //Driver Name
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                     child: Text(
@@ -47,8 +73,8 @@ class _pendingPaymentsState extends State<pendingPayments> {
                           ),
                        ),
                     ),
-
-                Padding(
+                  //Driver information
+                  Padding(
                     padding: EdgeInsets.only(left: 15.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,6 +92,7 @@ class _pendingPaymentsState extends State<pendingPayments> {
                         Text("Trailer Plate: None") :
                         Text("Trailer Plate: ${data["trailerPlateNum"]}"),
 
+                        //Dropoff and Pickup dates for truck
                          Padding(
                           padding: EdgeInsets.only(top: 7.0),
                           child: Column(         
@@ -77,7 +104,6 @@ class _pendingPaymentsState extends State<pendingPayments> {
                               data["pickupDate"] == null ?
                                 Text("Pick Up Date: None", style:TextStyle(color: Colors.red[700])):
                                 Text("Pick Up Date: ${data["pickupDate"]}", style:TextStyle(color: Colors.red[700])),
-                              
                             ],
                           ),
                         ),
@@ -91,25 +117,10 @@ class _pendingPaymentsState extends State<pendingPayments> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                   PopupMenuButton<int>(
-                      icon: Icon(Icons.more_vert),
-                      itemBuilder: (context) => [
-                            PopupMenuItem(
-                              value: 1,
-                              child: Text("Edit"),
-                            ),
-                            PopupMenuItem(
-                              value: 2,
-                              child: Text("Delete"),
-                            ),
-                          ],
+                    //Options menu 
+                    optionsMenu(data),
 
-                          onSelected: (value){
-                            value == 1 ?
-                              print("Edit item")
-                            : deleteItem(data);
-                          },
-                    ),
+                    //Pay button
                     Container(
                       alignment: Alignment.bottomRight,
                       padding: EdgeInsets.only(right: 15.0),
@@ -144,6 +155,8 @@ class _pendingPaymentsState extends State<pendingPayments> {
 
       body: Column(
         children: <Widget>[
+
+          //List View for all unpaid driver entries 
           Expanded(
             child: StreamBuilder(
               stream: Firestore.instance
