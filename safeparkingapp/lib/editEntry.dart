@@ -31,23 +31,13 @@ class _editEntryState extends State<editEntry> {
 //Radio button and function for monthly or non-monthly
 //payment options
   int radioValue1 = 0;
-  bool showDates = true;
 
-  void handleRadioValueChange(int value){
-
-    setState(() {
-      radioValue1 = value;
-      value == 1 ? showDates = false: showDates = true;
-    });
-
-  }
 
 //Map containing all form data is created and 
 //add on firebase 
   void createForm(){
 
     var data = {
-      'monthly': !showDates,
       'pickupDate': pickupDate.text,
       'dropOffDate': dropOffDate.text,
       'firstName': firstName.text,
@@ -98,8 +88,6 @@ class _editEntryState extends State<editEntry> {
   }
 
 
-
-
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -117,28 +105,11 @@ class _editEntryState extends State<editEntry> {
             child: ListView(
               children: <Widget>[
 
-                //Radio buttons for monthly or non-monthly payments
-                Row(
-                  children: <Widget>[
-                    Radio(
-                      value: 0,
-                      groupValue: radioValue1,
-                      onChanged: handleRadioValueChange,
-                    ),
-                    Text("No Monthly Payment"),
-                    Radio(
-                      value: 1,
-                      groupValue: radioValue1,
-                      onChanged: handleRadioValueChange,
-                    ),
-                    Text("Monthly Payment"),
-                  ],
-                ),
 
                 //ShowDates boolean is determined by radio
                 //buttons above. Showdates determines, whether
                 //drop off and pickup date entry fields will display
-                showDates ?
+                !widget.entryInfo["monthly"] ?
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -151,7 +122,7 @@ class _editEntryState extends State<editEntry> {
                             editable: true,
                             controller: pickupDate,
                             decoration: InputDecoration(
-                                labelText: 'Pickup Date', hasFloatingPlaceholder: false),
+                                labelText: widget.entryInfo["dropOffDate"], hasFloatingPlaceholder: false),
                             onChanged: (dt) => setState(() => print(dt)),
                           ),
                         )
@@ -168,7 +139,8 @@ class _editEntryState extends State<editEntry> {
                             editable: true,
                             controller: dropOffDate,
                             decoration: InputDecoration(
-                                labelText: 'Dropoff Date', hasFloatingPlaceholder: false),
+                                labelText: widget.entryInfo["pickupDate"] == ""?
+                                'Pickup Date': "Drop Off Date", hasFloatingPlaceholder: false),
                             onChanged: (dt) => setState(() => print(dt)),
                           ),
                         )
