@@ -11,14 +11,14 @@ class newForm extends StatefulWidget {
 class _newFormState extends State<newForm> {
 
 //Controllers for all textfields in the for
-  var pickupDate = TextEditingController();
-  var dropOffDate =TextEditingController();
+  var pickupDate = TextEditingController(text: "");
+  var dropOffDate =TextEditingController(text: "");
   var firstName = TextEditingController();
   var lastName = TextEditingController();
-  var contactNum = TextEditingController();
-  var licenseNum =TextEditingController();
-  var trailerPlateNum = TextEditingController();
-  var boxPlateNum = TextEditingController();
+  var contactNum = TextEditingController(text: "");
+  var licenseNum =TextEditingController(text: "");
+  var trailerPlateNum = TextEditingController(text: "");
+  var boxPlateNum = TextEditingController(text: "");
   var employeeID = TextEditingController();
   
   bool signatureBool = false;
@@ -48,8 +48,8 @@ class _newFormState extends State<newForm> {
       'dropOffDate': dropOffDate.text,
       'firstName': firstName.text,
       'lastName': lastName.text,
-      'contactNum': int.parse(contactNum.text),
-      'licenseNum': int.parse(licenseNum.text),
+      'contactNum': contactNum.text,
+      'licenseNum': licenseNum.text,
       'trailerPlateNum': trailerPlateNum.text,
       'boxPlateNum': boxPlateNum.text,
       'employee': employeeID.text,

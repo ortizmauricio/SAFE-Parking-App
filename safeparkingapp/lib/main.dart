@@ -14,15 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SAFE Parking',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.indigo,
       ),
       home: MyHomePage(title: 'SAFE Parking'),
@@ -33,16 +24,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -120,12 +101,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 .where('paid', isEqualTo: false)
                 .snapshots(),
               builder: (BuildContext context, AsyncSnapshot snapshot){
-                return GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => pendingPayments(snapshot.data)));
-                  },
-                  child: paymentCard("Pending Payments", snapshot.data.documents.length),
-                );
+                if (snapshot.hasError)
+                  return Text('Error: ${snapshot.error}');
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none: return Text('No connection');
+                  case ConnectionState.waiting: return Text('Awaiting information...');
+                  case ConnectionState.active: return GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => pendingPayments(snapshot.data)));
+                    },
+                    child: paymentCard("Pending Payments", snapshot.data.documents.length),
+                  );
+                   case ConnectionState.done: return GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => pendingPayments(snapshot.data)));
+                    },
+                    child: paymentCard("Pending Payments", snapshot.data.documents.length),
+                  );
+                }
               },
             ),
 
@@ -139,7 +132,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 .where('paid', isEqualTo: true)
                 .snapshots(),
               builder: (BuildContext context, AsyncSnapshot snapshot){
-                return paymentCard("Completed Payments", snapshot.data.documents.length);
+                if (snapshot.hasError)
+                  return Text('Error: ${snapshot.error}');
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none: return Text('No connection');
+                  case ConnectionState.waiting: return Text('Awaiting information...');
+                  case ConnectionState.active: return paymentCard("Completed Payments", snapshot.data.documents.length);
+                  case ConnectionState.done: return paymentCard("Completed Payments", snapshot.data.documents.length);
+                }
+                              
               },
             ),
 

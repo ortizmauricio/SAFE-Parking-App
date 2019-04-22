@@ -59,6 +59,7 @@ PopupMenuButton optionsMenu(var data){
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              //Everything on the left side of the card
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -113,6 +114,7 @@ PopupMenuButton optionsMenu(var data){
                 ],
               ),
 
+              //Everything on the right side of the card
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
