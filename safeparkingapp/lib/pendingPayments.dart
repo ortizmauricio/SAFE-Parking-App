@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'editEntry.dart';
 
 
 class pendingPayments extends StatefulWidget {
@@ -42,7 +43,7 @@ PopupMenuButton optionsMenu(var data){
 
           onSelected: (value){
             value == 1 ?
-              print("Edit item")
+            Navigator.push(context, MaterialPageRoute(builder: (context) => editEntry(data)))
             :deleteItem(data);
           },
     );
@@ -73,7 +74,7 @@ PopupMenuButton optionsMenu(var data){
                             fontWeight: FontWeight.w600,
                           ),
                        ),
-                    ),
+                  ),
                   //Driver information
                   Padding(
                     padding: EdgeInsets.only(left: 15.0),
