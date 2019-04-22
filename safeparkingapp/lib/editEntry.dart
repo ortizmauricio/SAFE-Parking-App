@@ -14,46 +14,43 @@ class editEntry extends StatefulWidget {
 
 class _editEntryState extends State<editEntry> {
 
-//Controllers for all textfields in the for
-  var pickupDate = TextEditingController();
-  var dropOffDate =TextEditingController();
-  var firstName = TextEditingController();
-  var lastName = TextEditingController();
-  var contactNum = TextEditingController();
-  var licenseNum =TextEditingController();
-  var trailerPlateNum = TextEditingController();
-  var boxPlateNum = TextEditingController();
-  var employeeID = TextEditingController();
-  
-  bool signatureBool = false;
-  bool paidBool = false;
-
-//Radio button and function for monthly or non-monthly
-//payment options
-  int radioValue1 = 0;
+//Controllers for all textfields in the form
+  var pickupDate = TextEditingController(text: "");
+  var dropOffDate = TextEditingController(text: "");
+  var firstName = TextEditingController(text: "");
+  var lastName = TextEditingController(text: "");
+  var contactNum = TextEditingController(text: "");
+  var licenseNum =TextEditingController(text: "");
+  var trailerPlateNum = TextEditingController(text: "");
+  var boxPlateNum = TextEditingController(text: "");
 
 
-//Map containing all form data is created and 
-//add on firebase 
-  void createForm(){
 
-    var data = {
-      'pickupDate': pickupDate.text,
-      'dropOffDate': dropOffDate.text,
-      'firstName': firstName.text,
-      'lastName': lastName.text,
-      'contactNum': contactNum.text,
-      'licenseNum': licenseNum.text,
-      'trailerPlateNum': trailerPlateNum.text,
-      'boxPlateNum': boxPlateNum.text,
-      'employee': employeeID.text,
-      'paid': paidBool,
-      'signature': signatureBool,
-    };
+//Update entry on firebase
+  void updateForm(var data){
+
+
+    Map<String, dynamic> updatedInfo = {};
+
+    if(pickupDate.text != "") updatedInfo["pickupDate"] = pickupDate.text;
+    if(dropOffDate.text != "") updatedInfo["dropOffDate"] = dropOffDate.text;
+    if(firstName.text != "") updatedInfo["firstName"] = firstName.text;
+    if(lastName.text != "") updatedInfo["lastName"] = lastName.text;
+    if(contactNum.text != "") updatedInfo["contactNum"] = contactNum.text;
+    if(trailerPlateNum.text != "") updatedInfo["trailerPlateNum"] = trailerPlateNum.text;
+    if(boxPlateNum.text != "") updatedInfo["boxPlateNum"] = boxPlateNum.text;
+
+
+    Firestore.instance
+    .collection("forms")
+    .document("safeparking")
+    .collection("forms")
+    .document(data.documentID)
+    .updateData(
       
-
-    final DocumentReference postRef = Firestore.instance.collection("forms").document('safeparking');
-    postRef.collection("forms").add(data);
+      updatedInfo
+    
+    );
   
   }
 
@@ -140,7 +137,7 @@ class _editEntryState extends State<editEntry> {
                             controller: dropOffDate,
                             decoration: InputDecoration(
                                 labelText: widget.entryInfo["pickupDate"] == ""?
-                                'Pickup Date': "Drop Off Date", hasFloatingPlaceholder: false),
+                                'Pickup Date': widget.entryInfo["pickupDate"], hasFloatingPlaceholder: false),
                             onChanged: (dt) => setState(() => print(dt)),
                           ),
                         )
@@ -243,13 +240,8 @@ class _editEntryState extends State<editEntry> {
                     color: Colors.indigo,
                     splashColor: Colors.blueGrey,
                     onPressed: (){
-                      if(signatureBool){
-                        createForm();
-                        Navigator.maybePop(context);
-                      }
-                      else{
-                         signatureAlert();
-                      }
+                      updateForm(widget.entryInfo);
+                      Navigator.maybePop(context);
                     },
                   )
                 )

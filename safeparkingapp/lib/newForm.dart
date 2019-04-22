@@ -145,9 +145,9 @@ class _newFormState extends State<newForm> {
                             inputType: InputType.date,
                             format: formats[InputType.date],
                             editable: true,
-                            controller: pickupDate,
+                            controller: dropOffDate,
                             decoration: InputDecoration(
-                                labelText: 'Pickup Date', hasFloatingPlaceholder: false),
+                                labelText: 'Drop Off Date', hasFloatingPlaceholder: false),
                             onChanged: (dt) => setState(() => print(dt)),
                           ),
                         )
@@ -162,9 +162,9 @@ class _newFormState extends State<newForm> {
                             inputType: InputType.date,
                             format: formats[InputType.date],
                             editable: true,
-                            controller: dropOffDate,
+                            controller: pickupDate,
                             decoration: InputDecoration(
-                                labelText: 'Dropoff Date', hasFloatingPlaceholder: false),
+                                labelText: 'Pick Up Date', hasFloatingPlaceholder: false),
                             onChanged: (dt) => setState(() => print(dt)),
                           ),
                         )
