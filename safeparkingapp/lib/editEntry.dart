@@ -184,7 +184,7 @@ class _editEntryState extends State<editEntry> {
                     controller: firstName,
                     autofocus: true,
                     decoration: InputDecoration(
-                      labelText: "First Name",
+                      helperText: "First Name",
                       hintText: widget.entryInfo["firstName"]
                     ),
                 ),
@@ -197,7 +197,8 @@ class _editEntryState extends State<editEntry> {
                     controller: lastName,
                     autofocus: true,
                     decoration: InputDecoration(
-                      labelText: "Last Name"
+                      helperText: "Last Name",
+                      hintText: widget.entryInfo["lastName"]
                     ),
                   ),
                 ),
@@ -210,7 +211,8 @@ class _editEntryState extends State<editEntry> {
                     autofocus: true,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: "Contact Number"
+                      helperText: "Contact Number",
+                      hintText: widget.entryInfo["contactNum"]
                     ),
                   ),
                 ),
@@ -223,7 +225,8 @@ class _editEntryState extends State<editEntry> {
                     autofocus: true,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: "Driver License Number"
+                      helperText: "Driver License Number",
+                      hintText: widget.entryInfo["licenseNum"]
                     ),
                   ),
                 ),
@@ -236,7 +239,8 @@ class _editEntryState extends State<editEntry> {
                     textCapitalization: TextCapitalization.characters,
                     autofocus: true,
                     decoration: InputDecoration(
-                      labelText: "Trailer Plate Number"
+                      helperText: "Trailer Plate Number",
+                      hintText: widget.entryInfo["trailerPlateNum"]
                     ),
                   ),
                 ),
@@ -249,74 +253,19 @@ class _editEntryState extends State<editEntry> {
                     autofocus: true,
                     textCapitalization: TextCapitalization.characters,
                     decoration: InputDecoration(
-                      labelText: "Box Plate Number"
+                      helperText: "Box Plate Number",
+                      hintText: widget.entryInfo["boxPlateNum"]
                     ),
                   ),
                 ),
 
-                //Employee Initials and Paid Checkbox
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(15.00),
-                          child: TextField(
-                            controller: employeeID,
-                            textCapitalization: TextCapitalization.characters,
-                            decoration: InputDecoration(
-                              labelText: "Employee Initials"
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(15.00),
-                          child: Row(
-                            children: <Widget>[
-                              Text("Paid"),
-                              Checkbox(
-                                value: paidBool,
-                                onChanged: (bool value){
-                                  setState(() {
-                                    paidBool = value;
-                                  });
-                                },
-                              )
-                            ],
-                          )
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                //Digital signature checkbox with corresponding statement
-                Row(
-                  children: <Widget>[
-                    Checkbox(
-                      value: signatureBool,
-                      onChanged: (bool value){
-                        setState(() {
-                          signatureBool = value;
-                        });
-                      },
-                    ),
-                    Expanded(
-                      child: Text("By clicking this checkbox you confirm that all details listed above are true"),
-                    )
-                  ],
-                ),
                 
                 //Submit button, only works if signature checkbox is true
                 Padding(
                   padding: EdgeInsets.only(left: 60.0, right: 60.0),
                   child: RaisedButton(
                     child: Text(
-                      "Add",
+                      "Update",
                       style: TextStyle(color: Colors.white)
                     ),
                     color: Colors.indigo,
