@@ -154,7 +154,7 @@ class _editEntryState extends State<editEntry> {
                     autofocus: true,
                     decoration: InputDecoration(
                       helperText: "First Name",
-                      hintText: widget.entryInfo["firstName"]
+                      hintText: widget.entryInfo["firstName"].toString()
                     ),
                 ),
                 ),
@@ -167,7 +167,7 @@ class _editEntryState extends State<editEntry> {
                     autofocus: true,
                     decoration: InputDecoration(
                       helperText: "Last Name",
-                      hintText: widget.entryInfo["lastName"]
+                      hintText: widget.entryInfo["lastName"].toString()
                     ),
                   ),
                 ),
@@ -181,7 +181,7 @@ class _editEntryState extends State<editEntry> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       helperText: "Contact Number",
-                      hintText: widget.entryInfo["contactNum"]
+                      hintText: widget.entryInfo["contactNum"].toString()
                     ),
                   ),
                 ),
@@ -195,7 +195,7 @@ class _editEntryState extends State<editEntry> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       helperText: "Driver License Number",
-                      hintText: widget.entryInfo["licenseNum"]
+                      hintText: widget.entryInfo["licenseNum"].toString()
                     ),
                   ),
                 ),
@@ -209,7 +209,7 @@ class _editEntryState extends State<editEntry> {
                     autofocus: true,
                     decoration: InputDecoration(
                       helperText: "Trailer Plate Number",
-                      hintText: widget.entryInfo["trailerPlateNum"]
+                      hintText: widget.entryInfo["trailerPlateNum"].toString()
                     ),
                   ),
                 ),
@@ -223,7 +223,7 @@ class _editEntryState extends State<editEntry> {
                     textCapitalization: TextCapitalization.characters,
                     decoration: InputDecoration(
                       helperText: "Box Plate Number",
-                      hintText: widget.entryInfo["boxPlateNum"]
+                      hintText: widget.entryInfo["boxPlateNum"].toString()
                     ),
                   ),
                 ),

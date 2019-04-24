@@ -19,10 +19,102 @@ class _pendingPaymentsState extends State<pendingPayments> {
   
 
 //Deletes current card via delete option
-  deleteItem(var data) async{
+  void deleteItem(var data) async{
     await Firestore.instance.runTransaction((Transaction myTransaction) async {
         await myTransaction.delete(data.reference);
     });
+  }
+
+  
+//Marks entry as paid on firebase
+void markAsPaid(var data){
+  Firestore.instance
+    .collection("forms")
+    .document("safeparking")
+    .collection("forms")
+    .document(data.documentID)
+    .updateData(
+      {
+        "paid" : true
+      }
+    );
+}
+
+//Calculates difference in days between drop off
+//and pickup date
+  int calculateDays(var data){
+    DateTime start = DateTime.parse(data["dropOffDate"]);
+    DateTime end = DateTime.parse(data["pickupDate"]);
+
+    int difference = end.difference(start).inDays;
+    
+    return difference;
+
+  }
+  
+//Completes pending payment and moves entry to
+//'Complete Payments"
+  void pay(var data){
+
+    var totalDays = calculateDays(data);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text("Payment"),
+          content: Container(
+            child: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text("Are all details correct?"),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Name: ${data["firstName"]} ${data["lastName"]}"),
+                        Text("Dates: ${data["dropOffDate"]} - ${data["pickupDate"]}"),
+                        Text("Total Days: ${totalDays}"),
+
+                        Padding(
+                          padding: EdgeInsets.only(top: 5),
+                          child: Text(
+                            "Total: \$${totalDays * 10}",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold),),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: new Text(
+                "Confirm",
+                style: TextStyle(color: Colors.green),
+              ),
+              onPressed: () {
+                markAsPaid(data);
+                Navigator.of(context).pop();
+              }
+            ),
+            FlatButton(
+              child: new Text(
+                "Close",
+                style: TextStyle(color: Colors.red),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }
+    );
   }
 
 
@@ -100,7 +192,7 @@ PopupMenuButton optionsMenu(var data){
                           child: Column(         
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              data["dropffDate"] == null ? 
+                              data["dropOffDate"] == null ? 
                                 Text("Drop Off Date: None", style:TextStyle(color: Colors.green[700])) :
                                 Text("Drop Off Date: ${data["dropOffDate"]}", style:TextStyle(color: Colors.green[700])),
                               data["pickupDate"] == null ?
@@ -130,7 +222,9 @@ PopupMenuButton optionsMenu(var data){
                       child: RaisedButton(
                         color: Colors.green,
                         child: Text("Pay", style: TextStyle(color: Colors.white),),
-                        onPressed: (){},
+                        onPressed: (){
+                          pay(data);
+                        },
                       ),
                     )
                     
