@@ -4,6 +4,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'newForm.dart';
 import 'pendingPayments.dart';
+import 'completedPayments.dart';
 
 void main() => runApp(MyApp());
 
@@ -137,8 +138,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none: return Text('No connection');
                   case ConnectionState.waiting: return Text('Awaiting information...');
-                  case ConnectionState.active: return paymentCard("Completed Payments", snapshot.data.documents.length);
-                  case ConnectionState.done: return paymentCard("Completed Payments", snapshot.data.documents.length);
+                  case ConnectionState.active: return GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => completedPayments(snapshot.data)));
+                    },
+                    child: paymentCard("Completed Payments", snapshot.data.documents.length),
+                  );
+                  case ConnectionState.done: return GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => completedPayments(snapshot.data)));
+                    },
+                    child: paymentCard("Completed Payments", snapshot.data.documents.length),
+                  );
                 }
                               
               },
