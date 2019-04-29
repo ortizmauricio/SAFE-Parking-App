@@ -247,7 +247,7 @@ PopupMenuButton optionsMenu(var data){
                   Navigator.maybePop(context);
                 },
               ),
-        title: Text("Pending Payments"),
+        title: Text("Completed Payments"),
       ),
 
       body: Column(

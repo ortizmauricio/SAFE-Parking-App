@@ -44,11 +44,17 @@ void markAsPaid(var data){
 //and pickup date
   int calculateDays(var data){
     DateTime start = DateTime.parse(data["dropOffDate"]);
-    DateTime end = DateTime.parse(data["pickupDate"]);
-
+    DateTime end;
+    if(data["pickupDate"] == ""){
+      end =DateTime.now();
+    }
+    else{
+      end = DateTime.parse(data["pickupDate"]);
+    }
+    
     int difference = end.difference(start).inDays;
     
-    return difference;
+    return difference == 0 ? 1:difference;
 
   }
   
@@ -57,6 +63,8 @@ void markAsPaid(var data){
   void pay(var data){
 
     var totalDays = calculateDays(data);
+    var lastDay;
+    data["pickupDate"] == "" ? lastDay = "Today" : lastDay = data["pickupDate"];
 
     showDialog(
       context: context,
@@ -74,7 +82,7 @@ void markAsPaid(var data){
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text("Name: ${data["firstName"]} ${data["lastName"]}"),
-                        Text("Dates: ${data["dropOffDate"]} - ${data["pickupDate"]}"),
+                        Text("Dates: ${data["dropOffDate"]} - $lastDay"),
                         Text("Total Days: ${totalDays}"),
 
                         Padding(
