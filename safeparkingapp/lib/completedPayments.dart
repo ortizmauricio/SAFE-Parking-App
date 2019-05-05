@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'editEntry.dart';
 
 
@@ -52,71 +53,19 @@ void markAsPaid(var data){
 
   }
   
-//Completes pending payment and moves entry to
-//'Complete Payments"
-  void pay(var data){
-
-    var totalDays = calculateDays(data);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context){
-        return AlertDialog(
-          title: Text("Payment"),
-          content: Container(
-            child: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text("Are all details correct?"),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Name: ${data["firstName"]} ${data["lastName"]}"),
-                        Text("Dates: ${data["dropOffDate"]} - ${data["pickupDate"]}"),
-                        Text("Total Days: ${totalDays}"),
-
-                        Padding(
-                          padding: EdgeInsets.only(top: 5),
-                          child: Text(
-                            "Total: \$${totalDays * 10}",
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold),),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: new Text(
-                "Confirm",
-                style: TextStyle(color: Colors.green),
-              ),
-              onPressed: () {
-                markAsPaid(data);
-                Navigator.of(context).pop();
-              }
-            ),
-            FlatButton(
-              child: new Text(
-                "Close",
-                style: TextStyle(color: Colors.red),),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      }
-    );
-  }
-
+void receipt(var data) async{
+  
+  var fName = data["firstName"].toUpperCase();
+  var lName = data["lastName"].toUpperCase();
+  var total = 10;
+  var url = 'http://polar-basin-36045.herokuapp.com//receipt?fName=$fName&lName=$lName&total=$total';
+  print(url);
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+}
 
 //Pop up menu on every card
 PopupMenuButton optionsMenu(var data){
@@ -215,15 +164,15 @@ PopupMenuButton optionsMenu(var data){
                     //Options menu 
                     optionsMenu(data),
 
-                    //Pay button
+                    //Receipt button
                     Container(
                       alignment: Alignment.bottomRight,
                       padding: EdgeInsets.only(right: 15.0),
                       child: RaisedButton(
-                        color: Colors.green,
-                        child: Text("Pay", style: TextStyle(color: Colors.white),),
+                        color: Colors.yellow[700],
+                        child: Text("Receipt", style: TextStyle(color: Colors.white),),
                         onPressed: (){
-                          pay(data);
+                          receipt(data);
                         },
                       ),
                     )

@@ -30,7 +30,10 @@ get "/receipt" do
 
 		# save to file
 		result.file.save('file.pdf')
+
+
 	end
 
-	return "hi"
+	send_file File.path('file.pdf')
+	
 end
