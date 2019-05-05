@@ -117,7 +117,7 @@ class _editEntryState extends State<editEntry> {
                             inputType: InputType.date,
                             format: formats[InputType.date],
                             editable: true,
-                            controller: pickupDate,
+                            controller: dropOffDate,
                             decoration: InputDecoration(
                                 labelText: widget.entryInfo["dropOffDate"], hasFloatingPlaceholder: false),
                             onChanged: (dt) => setState(() => print(dt)),
@@ -134,7 +134,7 @@ class _editEntryState extends State<editEntry> {
                             inputType: InputType.date,
                             format: formats[InputType.date],
                             editable: true,
-                            controller: dropOffDate,
+                            controller: pickupDate,
                             decoration: InputDecoration(
                                 labelText: widget.entryInfo["pickupDate"] == ""?
                                 'Pickup Date': widget.entryInfo["pickupDate"], hasFloatingPlaceholder: false),
