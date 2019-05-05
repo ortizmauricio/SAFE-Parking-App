@@ -57,7 +57,7 @@ void receipt(var data) async{
   
   var fName = data["firstName"].toUpperCase();
   var lName = data["lastName"].toUpperCase();
-  var total = 10;
+  var total = data["total"];
   var url = 'http://polar-basin-36045.herokuapp.com//receipt?fName=$fName&lName=$lName&total=$total';
   print(url);
     if (await canLaunch(url)) {
@@ -135,6 +135,16 @@ PopupMenuButton optionsMenu(var data){
                         Text("Trailer Plate: None") :
                         Text("Trailer Plate: ${data["trailerPlateNum"]}"),
 
+
+                        Padding(
+                          padding: EdgeInsets.only(top: 5),
+                          child: Text(
+                            "Total: \$${data["total"]}",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),),
+                        ),
+
                         //Dropoff and Pickup dates for truck
                          Padding(
                           padding: EdgeInsets.only(top: 7.0),
@@ -150,6 +160,8 @@ PopupMenuButton optionsMenu(var data){
                             ],
                           ),
                         ),
+
+                        
                       ],                      
                     ),
                   ),   

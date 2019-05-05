@@ -27,7 +27,7 @@ class _pendingPaymentsState extends State<pendingPayments> {
 
   
 //Marks entry as paid on firebase
-void markAsPaid(var data){
+void markAsPaid(var data, var total){
   Firestore.instance
     .collection("forms")
     .document("safeparking")
@@ -35,7 +35,8 @@ void markAsPaid(var data){
     .document(data.documentID)
     .updateData(
       {
-        "paid" : true
+        "paid" : true,
+        "total" :total
       }
     );
 }
@@ -107,7 +108,7 @@ void markAsPaid(var data){
                 style: TextStyle(color: Colors.green),
               ),
               onPressed: () {
-                markAsPaid(data);
+                markAsPaid(data, (totalDays  * 10));
                 Navigator.of(context).pop();
               }
             ),
