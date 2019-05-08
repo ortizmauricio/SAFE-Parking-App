@@ -20,7 +20,7 @@ class _newFormState extends State<newForm> {
   var trailerPlateNum = TextEditingController(text: "");
   var boxPlateNum = TextEditingController(text: "");
   var employeeID = TextEditingController();
-  
+  var total = 0;
   bool signatureBool = false;
   bool paidBool = false;
 
@@ -33,7 +33,16 @@ class _newFormState extends State<newForm> {
 
     setState(() {
       radioValue1 = value;
-      value == 1 ? showDates = false: showDates = true;
+      if(value == 1)
+      {
+        showDates = false;
+        total = 300;
+      }
+      else
+      {
+        showDates = true;
+        total = 0;
+      }
     });
 
   }
@@ -43,6 +52,7 @@ class _newFormState extends State<newForm> {
   void createForm(){
 
     var data = {
+      'total' : total,
       'monthly': !showDates,
       'pickupDate': pickupDate.text,
       'dropOffDate': dropOffDate.text,

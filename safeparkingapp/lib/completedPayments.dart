@@ -134,6 +134,7 @@ PopupMenuButton optionsMenu(var data){
                       data["trailerPlateNum"] == "" ?
                         Text("Trailer Plate: None") :
                         Text("Trailer Plate: ${data["trailerPlateNum"]}"),
+                        Text("Employee ID: ${data["employee"]}"),
 
 
                         Padding(

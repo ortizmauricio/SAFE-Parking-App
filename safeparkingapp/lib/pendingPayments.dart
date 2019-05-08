@@ -63,10 +63,19 @@ void markAsPaid(var data, var total){
 //'Complete Payments"
   void pay(var data){
 
-    var totalDays = calculateDays(data);
+    var totalDays;
     var lastDay;
-    data["pickupDate"] == "" ? lastDay = "Today" : lastDay = data["pickupDate"];
+    
 
+    if(data["monthly"])
+    {
+      totalDays = 30;
+    }
+    else{
+      data["pickupDate"] == "" ? lastDay = "Today" : lastDay = data["pickupDate"];
+      totalDays = calculateDays(data);
+    }
+    
     showDialog(
       context: context,
       builder: (BuildContext context){
@@ -83,7 +92,8 @@ void markAsPaid(var data, var total){
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text("Name: ${data["firstName"]} ${data["lastName"]}"),
-                        Text("Dates: ${data["dropOffDate"]} - $lastDay"),
+
+                        !data["monthly"] ? Text("Dates: ${data["dropOffDate"]} - $lastDay"):Text("Monthly Payment"),
                         Text("Total Days: ${totalDays}"),
 
                         Padding(
@@ -194,6 +204,8 @@ PopupMenuButton optionsMenu(var data){
                       data["trailerPlateNum"] == "" ?
                         Text("Trailer Plate: None") :
                         Text("Trailer Plate: ${data["trailerPlateNum"]}"),
+
+                        Text("Employee ID: ${data["employee"]}"),
 
                         //Dropoff and Pickup dates for truck
                          Padding(
